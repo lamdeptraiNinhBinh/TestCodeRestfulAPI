@@ -1,14 +1,20 @@
-import React from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
+import React from "react";
+import { Button, Form, Input } from "antd";
+import { post } from "../../Api/handleApi";
+import { Navigate } from "react-router";
 
 function CreateProduct() {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const onFinish = async (values) => {
+    post(values)
+      .then((data) => {
+        console.log("Response:", data);
+        Navigate('/');
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
   return (
     <>
       <Form
@@ -26,12 +32,11 @@ function CreateProduct() {
           remember: true,
         }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item
-          label="Username"
-          name="username"
+          label="name"
+          name="name"
           rules={[
             {
               required: true,
@@ -43,8 +48,8 @@ function CreateProduct() {
         </Form.Item>
 
         <Form.Item
-          label="Password"
-          name="password"
+          label="price"
+          name="price"
           rules={[
             {
               required: true,
@@ -52,18 +57,7 @@ function CreateProduct() {
             },
           ]}
         >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Checkbox>Remember me</Checkbox>
+          <Input />
         </Form.Item>
 
         <Form.Item
