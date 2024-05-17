@@ -1,8 +1,9 @@
-const url = "https://localhost:7257/Petrol/Petol";
+const url = "https://localhost:7257/Petrol/Petol/";
 
-export const put = async (url, path, values) => {
+export const put = async (path, values) => {
   const init = {
     method: "PUT", // Cập nhật thông tin
+    mode: "cors", // Chế độ CORS
 
     headers: {
       "Content-Type": "application/json", // Loại dữ liệu nhận về
@@ -32,7 +33,7 @@ export const post = async (values) => {
 };
 //
 
-export const get = async (url, path) => {
+export const get = async (path) => {
   const response = await fetch(url + path, {
     method: "GET",
     mode: "cors", // Chế độ CORS

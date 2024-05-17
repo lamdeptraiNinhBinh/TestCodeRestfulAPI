@@ -13,12 +13,10 @@ function EditProduct() {
     },
   ]);
 
-  const url = "https://localhost:7257/Petrol/";
-
   useEffect(() => {
     const fetchApi = async () => {
       try {
-        const response = await get(url, `edit/${id}`);
+        const response = await get(`${id}`);
         const data = await response.json();
         setProducts(data);
       } catch (error) {
@@ -30,7 +28,7 @@ function EditProduct() {
   }, [id]);
 
   const onFinish = async (values) => {
-    put(url, `edit/${id}`, values)
+    put(`${id}`, values)
       .then((data) => {
         console.log("Response:", data);
         setSuccess(true); // Set success state to true when successfully added
