@@ -1,14 +1,22 @@
-import React from "react";
-import { Button, Form, Input } from "antd";
+import React, { useState } from "react";
+import { Button, Form, Input, Alert } from "antd";
 import { post } from "../../Api/handleApi";
-import { Navigate } from "react-router";
+
 
 function CreateProduct() {
+  const [success, setSuccess] = useState(false);
+  const [form] = Form.useForm(); // Sử dụng Form.useForm() để sử dụng form instance
+  
   const onFinish = async (values) => {
     post(values)
       .then((data) => {
         console.log("Response:", data);
-        Navigate('/');
+        setSuccess(true); // Set success state to true when successfully added
+        setTimeout(() => {
+          setSuccess(false); // Hide success message after 3 seconds
+          form.resetFields(); // Reset form fields to initial values
+          //Navigate('/');
+        }, 3000);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -17,7 +25,16 @@ function CreateProduct() {
 
   return (
     <>
+      {success && (
+        <Alert
+          message="Successfully added product"
+          type="success"
+          showIcon
+          style={{ marginBottom: "20px" }}
+        />
+      )}
       <Form
+        form={form} // Gắn form instance với Form
         name="basic"
         labelCol={{
           span: 8,

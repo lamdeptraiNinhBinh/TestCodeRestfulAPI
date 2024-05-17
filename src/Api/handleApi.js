@@ -1,15 +1,15 @@
-const url = 'https://pokeapi.co/api/v2/pokemon/ditto';
+const url = 'https://localhost:7257/Petrol/Petol';
 
-export const patch = async () => {
+export const put = async (values) => {
     const init = {
-        method: 'PATCH', // Cập nhật thông tin 
+        method: 'PUT', // Cập nhật thông tin 
         
         headers: {
         'Content-Type': 'application/json',  // Loại dữ liệu nhận về
         Authorization: 'TOKEN' // Token được server cung cấp để xác thực
         },
     
-        body: JSON.stringify({ creature: "poultry" }),
+        body: JSON.stringify(values),
     }
     const response = await fetch(url, init);
     const data = response.json();
@@ -21,6 +21,7 @@ export const patch = async () => {
 export const post = async (values) => {
     const options = {
         method: 'POST',
+        mode: 'cors', // Chế độ CORS
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(values)
     };
