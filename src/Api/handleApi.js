@@ -46,3 +46,20 @@ export const get = async (path) => {
 
   return data;
 };
+
+export const deleteItem = async (path) => {
+  const deleteMethod = {
+    method: "DELETE", // Method itself
+    headers: {
+      "Content-type": "application/json; charset=UTF-8", // Indicates the content
+    },
+    // No need to have body, because we don't send nothing to the server.
+  };
+  // Make the HTTP Delete call using fetch api
+
+  const response = await fetch(url + path, deleteMethod);
+  
+  const data = response.json();
+
+  return data;
+};
