@@ -4,14 +4,14 @@ import { deleteItem } from "../../Api/handleApi";
 
 function DeleteProduct() {
   const { id } = useParams();
-  const [deleteItem, setDeleteItem] = useState(false);
+  const [deleted, setDeleted] = useState(false);
 
   useEffect(() => {
     const fetchApi = async () => {
       try {
         const response = await deleteItem(`${id}`);
         const data = await response.json();
-        setDeleteItem(true);
+        setDeleted(true);
         setProducts(data);
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -19,11 +19,11 @@ function DeleteProduct() {
     };
 
     fetchApi();
-  }, [id]);
+  }, []);
 
   return (
     <>
-      {deleteItem ? (
+      {deleted ? (
         <div>Product will be deleted.</div>
       ) : (
         <div>DeleteProduct</div>
