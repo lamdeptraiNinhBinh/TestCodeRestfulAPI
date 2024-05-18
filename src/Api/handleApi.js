@@ -1,8 +1,9 @@
-const url = "https://localhost:7257/Petrol/Petol";
+const url = "https://localhost:7257/Petrol/Petol/";
 
-export const put = async (url, path, values) => {
+export const put = async (path, values) => {
   const init = {
     method: "PUT", // Cập nhật thông tin
+    mode: "cors", // Chế độ CORS
 
     headers: {
       "Content-Type": "application/json", // Loại dữ liệu nhận về
@@ -32,10 +33,7 @@ export const post = async (values) => {
 };
 //
 
-export const get = async (url, path) => {
-
-  console.log(url+path)
-
+export const get = async (path) => {
   const response = await fetch(url + path, {
     method: "GET",
     mode: "cors", // Chế độ CORS
@@ -43,12 +41,25 @@ export const get = async (url, path) => {
       "Content-Type": "application/json",
     },
   });
+
+  const data = response.json();
+
+  return data;
+};
+
+export const deleteItem = async (path) => {
+  const deleteMethod = {
+    method: "DELETE", // Method itself
+    headers: {
+      "Content-type": "application/json; charset=UTF-8", // Indicates the content
+    },
+    // No need to have body, because we don't send nothing to the server.
+  };
+  // Make the HTTP Delete call using fetch api
+
+  const response = await fetch(url + path, deleteMethod);
   
+  const data = response.json();
 
-  const data = await response.json();
-
-  console.log(data)
-
-  
   return data;
 };

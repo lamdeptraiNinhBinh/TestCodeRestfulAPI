@@ -13,24 +13,14 @@ function EditProduct() {
       name: "",
       price: "",
     },
-  );
-  
-  const [success, setSuccess] = useState(false);
-
-  const url = "https://localhost:7257/Petrol/Petol/edit?";
+  ]);
 
   useEffect(() => {
     const fetchApi = async () => {
       try {
-        const response = await get(url, `${id}`);
-
-        form.setFieldsValue({
-          id: response.id,
-          name: response.name,
-          price: response.price
-        });
-        console.log(response);
-        setProducts(response);
+        const response = await get(`${id}`);
+        const data = await response.json();
+        setProducts(data);
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
@@ -40,7 +30,7 @@ function EditProduct() {
   }, []);
 
   const onFinish = async (values) => {
-    put(url, `edit/${id}`, values)
+    put(`${id}`, values)
       .then((data) => {
         console.log("Response:", data);
         setSuccess(true); // Set success state to true when successfully added
