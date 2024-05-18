@@ -1,6 +1,6 @@
 const url = "https://localhost:7257/Petrol/Petol/";
 
-export const put = async (path, values) => {
+export const put = async (url, values) => {
   const init = {
     method: "PUT", // Cập nhật thông tin
     mode: "cors", // Chế độ CORS
@@ -12,11 +12,35 @@ export const put = async (path, values) => {
 
     body: JSON.stringify(values),
   };
-  const response = await fetch(url + path, init);
-  const data = response.json();
 
-  return data;
+  let response = '';
+
+  try {
+    response = await fetch(url, init);
+
+    // Kiểm tra nếu trạng thái phản hồi là OK (200-299)
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    // Thử phân tích thân phản hồi thành JSON
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    // Log lỗi và phản hồi để debug
+    console.error('Fetch error:', error);
+
+    // Debug bổ sung: Kiểm tra văn bản phản hồi nếu nó không phải JSON
+    if (response) {
+      const responseText = await response.text();
+      console.error('Response text:', responseText);
+    }
+
+    // Ném lại lỗi hoặc xử lý nó thích hợp
+    throw error;
+  }
 };
+
 //
 
 export const post = async (values) => {
@@ -47,9 +71,10 @@ export const get = async (path) => {
   return data;
 };
 
-export const deleteItem = async (path) => {
+export const deleteItem = async (url) => {
   const deleteMethod = {
     method: "DELETE", // Method itself
+    mode: "cors", // Chế độ CORS
     headers: {
       "Content-type": "application/json; charset=UTF-8", // Indicates the content
     },
@@ -57,7 +82,7 @@ export const deleteItem = async (path) => {
   };
   // Make the HTTP Delete call using fetch api
 
-  const response = await fetch(url + path, deleteMethod);
+  const response = await fetch(url, deleteMethod);
   
   const data = response.json();
 

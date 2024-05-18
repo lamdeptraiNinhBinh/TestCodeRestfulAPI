@@ -7,41 +7,40 @@ function EditProduct() {
   const {id} = useParams();
 
   const [form] = Form.useForm();
-  const [products, setProducts] = useState(
-    {
-      id: "",
-      name: "",
-      price: "",
-    },
-  ]);
+  const [dataSuccess, setDataSuccess] = useState(false);
+  // const [products, setProducts] = useState(
+  //   {
+  //     id: "",
+  //     name: "",
+  //     price: "",
+  //   },
+  // );
 
   useEffect(() => {
-    const fetchApi = async () => {
-      try {
-        const response = await get(`${id}`);
-        const data = await response.json();
-        setProducts(data);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
-    };
+    fetch(`https://localhost:7257/Petrol/Petol/edit?${id}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        const userData = data;
 
-    fetchApi();
-  }, []);
+        // Thiết lập giá trị khởi tạo cho form
+        form.setFieldsValue(userData);
+
+        // setProducts(userData)
+      })
+      .catch(error => {
+        console.error('There was an error fetching the user data!', error);
+      });
+  }, [form]);
 
   const onFinish = async (values) => {
-    put(`${id}`, values)
-      .then((data) => {
-        console.log("Response:", data);
-        setSuccess(true); // Set success state to true when successfully added
-        setTimeout(() => {
-          setSuccess(false); // Hide success message after 3 seconds
-          form.resetFields(); // Reset form fields to initial values
-        }, 3000);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    console.log(values)
+    const response = await put(`https://localhost:7257/Petrol/Petol`, values);
+
+    console.log(response)
+    if(response) {
+      setDataSuccess(true);
+    }
   };
   
   // console.log(products)
@@ -51,6 +50,7 @@ function EditProduct() {
   return (
     <>
       <Form
+        form={form}
         name="basic"
         labelCol={{
           span: 8,
@@ -68,6 +68,7 @@ function EditProduct() {
         <Form.Item
           label="id"
           name="id"
+          
           rules={[
             {
               required: true,
@@ -75,7 +76,7 @@ function EditProduct() {
             },
           ]}
         >
-          <Input />
+          <Input readOnly/>
         </Form.Item>
 
         <Form.Item
@@ -115,6 +116,8 @@ function EditProduct() {
           </Button>
         </Form.Item>
       </Form>
+
+      {dataSuccess ? (<div>Success</div>) : (<div></div>)}
     </>
   );
 }
