@@ -33,6 +33,9 @@ export const post = async (values) => {
 //
 
 export const get = async (url, path) => {
+
+  console.log(url+path)
+
   const response = await fetch(url + path, {
     method: "GET",
     mode: "cors", // Chế độ CORS
@@ -40,8 +43,12 @@ export const get = async (url, path) => {
       "Content-Type": "application/json",
     },
   });
+  
 
-  const data = response.json();
+  const data = await response.json();
 
+  console.log(data)
+
+  
   return data;
 };

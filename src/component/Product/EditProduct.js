@@ -4,30 +4,40 @@ import { useParams } from "react-router";
 import { Button, Form, Input } from "antd";
 
 function EditProduct() {
-  const { id } = useParams();
+  const {id} = useParams();
+
   const [form] = Form.useForm();
-  const [products, setProducts] = useState([
+  const [products, setProducts] = useState(
     {
+      id: "",
       name: "",
       price: "",
     },
-  ]);
+  );
+  
+  const [success, setSuccess] = useState(false);
 
-  const url = "https://localhost:7257/Petrol/";
+  const url = "https://localhost:7257/Petrol/Petol/edit?";
 
   useEffect(() => {
     const fetchApi = async () => {
       try {
-        const response = await get(url, `edit/${id}`);
-        const data = await response.json();
-        setProducts(data);
+        const response = await get(url, `${id}`);
+
+        form.setFieldsValue({
+          id: response.id,
+          name: response.name,
+          price: response.price
+        });
+        console.log(response);
+        setProducts(response);
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
     };
 
     fetchApi();
-  }, [id]);
+  }, []);
 
   const onFinish = async (values) => {
     put(url, `edit/${id}`, values)
@@ -43,6 +53,10 @@ function EditProduct() {
         console.error("Error:", error);
       });
   };
+  
+  // console.log(products)
+
+  
 
   return (
     <>
@@ -57,12 +71,7 @@ function EditProduct() {
         style={{
           maxWidth: 600,
         }}
-        initialValues={{
-          remember: true,
-          id: products[0].id,
-          name: products[0].name,
-          price: products[0].price,
-        }}
+
         onFinish={onFinish}
         autoComplete="off"
       >

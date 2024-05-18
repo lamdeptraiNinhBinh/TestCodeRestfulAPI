@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Product() {
   const [products, setProducts] = useState([]);
@@ -20,7 +21,7 @@ function Product() {
         }
 
         const data = await response.json();
-        console.log(data);
+        
 
         setProducts(data || []); // Đảm bảo data.products tồn tại
       } catch (error) {
@@ -43,6 +44,7 @@ function Product() {
               <th style={{ border: "1px solid black", padding: "8px" }}>ID</th>
               <th style={{ border: "1px solid black", padding: "8px" }}>Name</th>
               <th style={{ border: "1px solid black", padding: "8px" }}>Price</th>
+              <th style={{ border: "1px solid black", padding: "8px" }}>edit</th>
             </tr>
           </thead>
           <tbody>
@@ -51,6 +53,7 @@ function Product() {
                 <td style={{ border: "1px solid black", padding: "8px" }}>{product.id}</td>
                 <td style={{ border: "1px solid black", padding: "8px" }}>{product.name}</td>
                 <td style={{ border: "1px solid black", padding: "8px" }}>{product.price}</td>
+                <td style={{ border: "1px solid black", padding: "8px" }}><Link to={`/edit/id=${product.id}`}>edit</Link></td>
               </tr>
             ))}
           </tbody>
